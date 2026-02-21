@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Tracker</title>
+</head>
+<body>
+    <h1>My Task Tracker</h1>
+    <p>Welcome! username.</p>
+
+    <a href="/add">
+    <button>Add New Task</button>
+</a>
+
+<h1>My Tasks</h1>
+    <div class="task-container">
+        {% for task in tasks %}
+            <div class="task">
+                <strong>{{ task[0] }}</strong> <br>
+                Priority: {{ task[1] }} <br>
+                Due: {{ task[2] }}
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

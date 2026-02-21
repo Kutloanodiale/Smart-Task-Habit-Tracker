@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.task-container {
+    height: 300px;       /* Set visible area */
+    overflow-y: scroll;  /* Scrollbar */
+    border: 1px solid #ccc;
+    padding: 10px;
+        }
+.task {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
