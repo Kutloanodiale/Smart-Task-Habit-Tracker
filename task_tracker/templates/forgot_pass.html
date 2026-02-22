@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Task</title>
+    <title>Forgot Password</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,7 +26,7 @@
         .container {
             display: flex;
             justify-content: center;
-            margin-top: 40px;
+            margin-top: 60px;
         }
 
         /* Card */
@@ -54,7 +54,7 @@
             color: #555;
         }
 
-        input, select {
+        input {
             width: 100%;
             padding: 10px;
             border-radius: 6px;
@@ -62,18 +62,13 @@
             font-size: 14px;
         }
 
-        input:focus, select:focus {
+        input:focus {
             outline: none;
             border-color: #2196F3;
             box-shadow: 0 0 4px rgba(33,150,243,0.4);
         }
 
-        /* Priority hint colors */
-        select option[value="High"] { color: #E53935; }
-        select option[value="Medium"] { color: #FB8C00; }
-        select option[value="Low"] { color: #43A047; }
-
-        /* Buttons */
+        /* Button */
         .btn-primary {
             width: 100%;
             margin-top: 25px;
@@ -137,27 +132,19 @@
     <!-- Main Content -->
     <div class="container">
         <div class="card">
-            <h2>Add New Task</h2>
+            <h2>Forgot Password</h2>
 
             <form method="POST">
-                <label for="title">Task Name</label>
-                <input type="text" name="title" id="title" placeholder="Enter task title..." required>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
-                <label for="priority">Priority</label>
-                <select name="priority" id="priority" required>
-                    <option value="">-- Select Priority --</option>
-                    <option value="High">🔴 High</option>
-                    <option value="Medium">🟠 Medium</option>
-                    <option value="Low">🟢 Low</option>
-                </select>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-                <label for="due_date">Due Date</label>
-                <input type="date" name="due_date" id="due_date" required>
-
-                <button type="submit" class="btn-primary">Add Task</button>
+                <button type="submit" class="btn-primary">Check</button>
             </form>
 
-            <a href="/home" class="btn-back">← Back to Dashboard</a>
+            <a href="/" class="btn-back">← Back to Login</a>
         </div>
     </div>
 

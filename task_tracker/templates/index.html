@@ -1,26 +1,209 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Task Tracker</title>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FAFAFA;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        .header {
+            background-color: #2196F3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        /* Card */
+        .card {
+            background: white;
+            padding: 30px;
+            width: 700px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        h3 {
+            margin-top: 30px;
+            color: #444;
+        }
+
+        /* Task lists */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background: #f1f1f1;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        #suggested-task-list li {
+            background-color: #ffe0e0;
+            border-left: 5px solid #E53935;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1976D2;
+        }
+
+        .btn-danger {
+            background-color: #F44336;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #D32F2F;
+        }
+
+        /* Flash messages */
+        #flash-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .flash-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+            opacity: 0.95;
+            transition: opacity 0.5s ease;
+        }
+
+        .flash-message.error {
+            background-color: #F44336;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>My Task Tracker</h1>
-    <p>Welcome! username.</p>
 
-    <a href="/add">
-    <button>Add New Task</button>
-</a>
-
-<h1>My Tasks</h1>
-    <div class="task-container">
-        {% for task in tasks %}
-            <div class="task">
-                <strong>{{ task[0] }}</strong> <br>
-                Priority: {{ task[1] }} <br>
-                Due: {{ task[2] }}
-            </div>
-        {% endfor %}
+    <!-- Header -->
+    <div class="header">
+        <h1>Smart Task Tracker</h1>
     </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="card">
+
+            <h2>Welcome, {{ username }} 👋</h2>
+
+            <div class="button-row">
+                <form method="GET" action="/add">
+                    <button type="submit" class="btn btn-primary">+ Add Task</button>
+                </form>
+
+                <form method="GET" action="/">
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            </div>
+
+            <!-- All tasks -->
+            <h3>Your Tasks</h3>
+            {% if tasks %}
+                <ul id="task-list">
+                    {% for task in tasks %}
+                        <li>
+                            {% if task.title %}{{ task.title }}{% else %}{{ task[0] }}{% endif %} -
+                            {% if task.priority == 3 %}High{% elif task.priority == 2 %}Medium{% else %}Low{% endif %} -
+                            {% if task.due_date %}{{ task.due_date }}{% else %}{{ task[2] }}{% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No tasks available.</p>
+            {% endif %}
+
+            <!-- Suggested tasks -->
+            <h3>Suggested Tasks (High Priority)</h3>
+            {% if suggested %}
+                <ul id="suggested-task-list">
+                    {% for task in suggested %}
+                        <li>
+                            {% if task.title %}{{ task.title }}{% else %}{{ task[0] }}{% endif %} -
+                            {% if task.due_date %}{{ task.due_date }}{% else %}{{ task[2] }}{% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No suggested tasks available.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- Flash fade-out -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const messages = document.querySelectorAll('.flash-message');
+            messages.forEach(msg => {
+                setTimeout(() => {
+                    msg.style.opacity = '0';
+                    setTimeout(() => { msg.remove(); }, 500);
+                }, 3000);
+            });
+        });
+    </script>
 
 </body>
 </html>
