@@ -10,7 +10,6 @@
             padding: 0;
         }
 
-        /* Top Header */
         .header {
             background-color: #2196F3;
             color: white;
@@ -22,14 +21,13 @@
             margin: 0;
         }
 
-        /* Main Container */
+        
         .container {
             display: flex;
             justify-content: center;
             margin-top: 60px;
         }
 
-        /* Card */
         .card {
             background: white;
             padding: 30px;
@@ -45,7 +43,7 @@
             text-align: center;
         }
 
-        /* Form Styling */
+      
         label {
             font-weight: bold;
             display: block;
@@ -68,7 +66,7 @@
             box-shadow: 0 0 4px rgba(33,150,243,0.4);
         }
 
-        /* Button */
+        
         .btn-primary {
             width: 100%;
             margin-top: 25px;
@@ -98,7 +96,7 @@
             color: #2196F3;
         }
 
-        /* Flash messages */
+       
         #flash-container {
             position: fixed;
             top: 20px;
@@ -124,12 +122,11 @@
 </head>
 <body>
 
-    <!-- Header -->
     <div class="header">
         <h1>Smart Task Tracker</h1>
     </div>
 
-    <!-- Main Content -->
+   
     <div class="container">
         <div class="card">
             <h2>Forgot Password</h2>
@@ -148,7 +145,7 @@
         </div>
     </div>
 
-    <!-- Flash messages -->
+    
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div id="flash-container">

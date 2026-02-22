@@ -1,7 +1,7 @@
 import mysql.connector
 from flask import Flask,render_template,make_response, request,jsonify,redirect,session,flash
 from werkzeug.security import generate_password_hash,check_password_hash
-
+import os
 
 app = Flask(__name__)#web app
 app.secret_key = "123" 
@@ -19,7 +19,6 @@ def register_user(username, email, password):
     db = get_db_connection()#connection to the database
     cursor = db.cursor()
 
-    # does user exist?
     cursor.execute("SELECT * FROM users WHERE username=%s OR email=%s", (username, email))
     if cursor.fetchone():
         cursor.close()
@@ -54,40 +53,40 @@ def login():
 
         if not user:
             flash("Username not found!", "error")
-            return redirect("/")  # redirect clears form
+            return redirect("/")  
 
         if not check_password_hash(user["password_hash"], password):
             flash("Incorrect password!", "error")
-            return redirect("/")  # redirect clears form
+            return redirect("/")  
 
-        # Successful login
+        
         session["username"] = username
         flash("Logged in successfully!", "success")
         return redirect("/home")
 
-    # GET request → show login form with headers to prevent caching
+    
     resp = make_response(render_template("login.html"))
     resp.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     resp.headers['Pragma'] = 'no-cache'
-    return resp # fresh empty form
+    return resp
 
 
 
 @app.route("/c_password", methods=["GET", "POST"])
 def register():
-    #grabs the values the user typed into your form fields
+    
     if request.method == "POST":
         username = request.form["username"]
         email = request.form["email"]
         password = request.form["password"]
         confirm = request.form["confirm"]
 
-        # Check passwords match
+        # Check passwords
         if password != confirm:
             flash("Passwords do not match!")
             return redirect("/c_password")
 
-        # Call your function
+        
         if register_user(username, email, password):
             flash("Account created successfully!")
             return redirect("/")
@@ -116,7 +115,7 @@ def forgot_password():
         db.close()
 
         if user:
-            # Correct username and email → go to new password page
+          
             return redirect(f"/reset_password/{username}")
         else:
             flash("Username or email not found!")
@@ -135,7 +134,7 @@ def reset_password(username):
             flash("Passwords do not match!")
             return render_template("reset_password.html", username=username)
 
-        # Hash the new password and update the database
+        
         password_hash = generate_password_hash(password)
         db = get_db_connection()
         cursor = db.cursor()
@@ -163,7 +162,7 @@ def add_task():
         due_dt = request.form["due_date"]
 
         priority_map = {"Low": 1, "Medium": 2, "High": 3}
-        prio = priority_map.get(prio, 1)  # default = 1 (Low)
+        prio = priority_map.get(prio, 1) 
 
         db = get_db_connection()
         cursor  =db.cursor()
@@ -212,7 +211,7 @@ def home():
         return redirect("/")
 
     tasks = load_tasks()               # all tasks
-    suggested = load_suggested_tasks() # top 2 high-priority tasks
+    suggested = load_suggested_tasks() # top 2priority tasks
 
     return render_template(
         "index.html",
@@ -224,5 +223,4 @@ def home():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)
